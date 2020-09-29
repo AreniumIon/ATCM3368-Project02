@@ -6,22 +6,15 @@ using UnityEngine.UI;
 
 public class Level01Controller : MonoBehaviour
 {
-    //AUDIO
-    [SerializeField] AudioClip startingSong;
-    
-    //Start is called before the first frame update
-    private void Start()
-    {
-        if (startingSong != null)
-        {
-            AudioManager.Instance.PlaySong(startingSong);
-        }
-    }
-
-    //SCORE AND SCENE MANAGEMENT
     [SerializeField] Text currentScoreTextView;
+    [SerializeField] GameObject pauseMenu;
 
     int currentScore;
+
+    private void Start()
+    {
+        Unpause();
+    }
 
     private void Update()
     {
@@ -30,10 +23,13 @@ public class Level01Controller : MonoBehaviour
         {
             IncreaseScore(5);
         }
-        //exit level
+        //pause
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ExitLevel();
+            if (pauseMenu.activeSelf)
+                Unpause();
+            else
+                Pause();
         }
     }
 
@@ -44,7 +40,25 @@ public class Level01Controller : MonoBehaviour
         //update score display to see new score
         currentScoreTextView.text = "Score: " + currentScore;
     }
-    
+
+    public void Pause()
+    {
+        //free cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        //pause menu
+        pauseMenu.SetActive(true);
+    }
+
+    public void Unpause()
+    {
+        //lock cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        //pause menu
+        pauseMenu.SetActive(false);
+    }
+
     public void ExitLevel()
     {
         //compare score to high score

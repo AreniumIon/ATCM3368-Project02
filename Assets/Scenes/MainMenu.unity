@@ -188,11 +188,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 532008299040059763, guid: c9efc17c2f637334897b95c220ad4ac2,
-        type: 3}
-      propertyPath: m_Volume
-      value: 0.1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9efc17c2f637334897b95c220ad4ac2, type: 3}
 --- !u!1 &216966708
@@ -2156,7 +2151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0233a964fb26944a479374bc1d0c81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingSong: {fileID: 8300000, guid: 9b65ca040ee5ea44390fb065756c2201, type: 3}
+  startingSong: {fileID: 8300000, guid: 5488d0a58540aba4785c75816abd8fdd, type: 3}
   highScoreTextView: {fileID: 1678704591}
 --- !u!1 &2078606483
 GameObject:
