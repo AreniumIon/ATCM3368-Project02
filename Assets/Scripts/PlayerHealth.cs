@@ -7,6 +7,7 @@ public class PlayerHealth : MonoBehaviour
 {
     [SerializeField] Level01Controller gameController;
     [SerializeField] Text healthText;
+    [SerializeField] HealthBar healthBar;
 
     public int maxHealth = 5;
     int health;
@@ -41,6 +42,7 @@ public class PlayerHealth : MonoBehaviour
     void UpdateHealth()
     {
         healthText.text = "HP: " + health + "/" + maxHealth;
+        healthBar.SetHealth((float) health /  (float) maxHealth);
     }
     
     void Die()
