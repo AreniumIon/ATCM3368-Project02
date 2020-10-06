@@ -8,12 +8,14 @@ public class Level01Controller : MonoBehaviour
 {
     [SerializeField] Text currentScoreTextView;
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject gameOverMenu;
 
     int currentScore;
 
     private void Start()
     {
         Unpause();
+        gameOverMenu.SetActive(false);
     }
 
     private void Update()
@@ -75,5 +77,30 @@ public class Level01Controller : MonoBehaviour
         }
         //load new level
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void GameOver()
+    {
+        //free cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        //gameover menu
+        gameOverMenu.SetActive(true);
+        //time
+        Time.timeScale = 0f;
+    }
+
+    public void Retry()
+    {
+        //compare score to high score
+        int highScore = PlayerPrefs.GetInt("HighScore");
+        if (currentScore > highScore)
+        {
+            //save current score as new high score
+            PlayerPrefs.SetInt("HighScore", currentScore);
+            Debug.Log("New high score: " + currentScore);
+        }
+        //retry level
+        SceneManager.LoadScene("Level01");
     }
 }
