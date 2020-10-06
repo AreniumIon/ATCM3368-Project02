@@ -6,7 +6,8 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] CharacterController controller;
 
-    public float speed = 12f;
+    public float speed = 8f;
+    public float sprintMod = 1.8f;
     public float jumpHeight = 3f;
 
     [SerializeField] Transform groundCheck;
@@ -18,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        //Ground detection
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         if (isGrounded && velocity.y < 0)
@@ -25,12 +27,20 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
+        //WASD
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
         Vector3 direction = transform.right * x + transform.forward * z;
 
-        controller.Move(direction * speed * Time.deltaTime);
+        //Sprinting
+        float finalSpeed = speed;
+        if (Input.GetKey(KeyCode.LeftShift))
+            finalSpeed *= sprintMod;
+        
+
+        //Apply movement
+        controller.Move(direction * finalSpeed * Time.deltaTime);
 
         if (Input.GetButtonDown("Jump") && isGrounded)
         {

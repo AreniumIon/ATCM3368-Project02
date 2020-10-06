@@ -48,6 +48,8 @@ public class Level01Controller : MonoBehaviour
         Cursor.visible = true;
         //pause menu
         pauseMenu.SetActive(true);
+        //time
+        Time.timeScale = 0f;
     }
 
     public void Unpause()
@@ -57,6 +59,8 @@ public class Level01Controller : MonoBehaviour
         Cursor.visible = false;
         //pause menu
         pauseMenu.SetActive(false);
+        //time
+        Time.timeScale = 1f;
     }
 
     public void ExitLevel()
