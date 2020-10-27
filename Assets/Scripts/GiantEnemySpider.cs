@@ -39,6 +39,18 @@ public class GiantEnemySpider : Freezable
         return Vector3.Distance(transform.position, player.position) <= detectionRange;
     }
 
+    //Collide with player
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("collision");
+        if (!isFrozen)
+        {
+            //if collides with player
+            if (other.gameObject.tag == "Player")
+                other.gameObject.GetComponent<PlayerHealth>().TakeDamage(1);
+            Debug.Log("touched player");
+        }
+    }
 
     //MOVEMENT
     void MoveToPlayer()
@@ -80,7 +92,6 @@ public class GiantEnemySpider : Freezable
     //Freezing
     public override void Freeze()
     {
-        Debug.Log("frozen");
         isFrozen = true;
         frozenObject.SetActive(true);
     }

@@ -9,6 +9,7 @@ public class FreezeGunController : MonoBehaviour
     [SerializeField] Transform rayOrigin;
     [SerializeField] Transform playerCamera;
     [SerializeField] Material freezeRayMaterial;
+    [SerializeField] Material altFireMaterial;
 
     //Firing stats
     [SerializeField] float cooldown = 0.2f;
@@ -18,6 +19,7 @@ public class FreezeGunController : MonoBehaviour
     //Line stats
     [SerializeField] float lineLifespan = 1f;
     private float lineTimer = 0f;
+    private bool isLeftClick = true;
 
     private void Update()
     {
@@ -70,6 +72,7 @@ public class FreezeGunController : MonoBehaviour
         freezeLine.enabled = true;
         lineTimer = 0f;
         StartCoroutine(DisableFreezeLine());
+        isLeftClick = true;
     }
 
     private void AltFire()
@@ -97,6 +100,7 @@ public class FreezeGunController : MonoBehaviour
         freezeLine.enabled = true;
         lineTimer = 0f;
         StartCoroutine(DisableFreezeLine());
+        isLeftClick = false;
     }
 
     private IEnumerator DisableFreezeLine()
@@ -109,7 +113,11 @@ public class FreezeGunController : MonoBehaviour
     {
         //Ray fades out over time
         lineTimer += Time.deltaTime / lineLifespan;
-        Color c = Color.Lerp(freezeRayMaterial.color, Color.clear, Mathf.Min(lineTimer, 1f));
+        Color c;
+        if (isLeftClick)
+            c = Color.Lerp(freezeRayMaterial.color, Color.clear, Mathf.Min(lineTimer, 1f));
+        else
+            c = Color.Lerp(altFireMaterial.color, Color.clear, Mathf.Min(lineTimer, 1f));
         freezeLine.material.color = c;
         freezeLine.material.SetColor("_EmissionColor", c);
     }

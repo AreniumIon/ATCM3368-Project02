@@ -507,9 +507,9 @@ MonoBehaviour:
   frozenObject: {fileID: 8627171697970101746}
   isFrozen: 0
   turnSpeed: 2
-  detectionRange: 25
+  detectionRange: 50
   projectileReloadTime: 3
-  distanceToFire: 25
+  distanceToFire: 50
   rocketProjectile: {fileID: 7790327107756591736, guid: 54af1557426319d4b8c27acc6a23c6a5,
     type: 3}
   projectileFireSound: {fileID: 5245222151140340460}
