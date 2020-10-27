@@ -8,6 +8,7 @@ public class RocketController : Freezable
     [SerializeField] ParticleSystem rocketTrail = null;
     [SerializeField] GameObject art = null;
     [SerializeField] ParticleSystem explosion = null;
+    [SerializeField] AudioSource audioSource = null;
     
     public float velocity = 5f;
     private bool hasExploded = false;
@@ -42,6 +43,7 @@ public class RocketController : Freezable
 
             //explode effect
             explosion.gameObject.SetActive(true);
+            audioSource.Play();
 
             //destroy rocket but wait for particle system
             rb.Sleep();

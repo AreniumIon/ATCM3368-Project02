@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] CharacterController controller;
+    [SerializeField] AudioSource jumpSound;
 
     public float speed = 8f;
     public float sprintMod = 1.8f;
@@ -49,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
+            jumpSound.Play();
         }
 
         velocity.y += Physics.gravity.y * Time.deltaTime;

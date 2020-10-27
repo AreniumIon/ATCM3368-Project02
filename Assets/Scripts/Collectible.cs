@@ -5,14 +5,27 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     [SerializeField] Level01Controller levelController;
+    [SerializeField] BoxCollider boxCollider;
+    [SerializeField] ParticleSystem particleSystem;
+    [SerializeField] GameObject art;
+    [SerializeField] AudioSource audioSource;
 
     private void OnTriggerEnter(Collider other)
     {
         //if collides with enemy and is small enough
         if (other.gameObject.CompareTag("Player"))
         {
+            //give score
             levelController.IncreaseScore(1);
-            Destroy(gameObject);
+
+            //feedback
+            audioSource.Play();
+            particleSystem.Play();
+
+            //delay destroy
+            art.SetActive(false);
+            boxCollider.enabled = false;
+            Destroy(gameObject, 2f);
         }
     }
 

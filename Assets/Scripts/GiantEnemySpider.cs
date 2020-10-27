@@ -14,6 +14,7 @@ public class GiantEnemySpider : Freezable
     [Header("Other")]
     Rigidbody rb = null;
     Transform player = null;
+    [SerializeField] AudioSource audioSource;
 
     private void Awake()
     {
@@ -42,13 +43,14 @@ public class GiantEnemySpider : Freezable
     //Collide with player
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("collision");
         if (!isFrozen)
         {
             //if collides with player
             if (other.gameObject.tag == "Player")
+            {
                 other.gameObject.GetComponent<PlayerHealth>().TakeDamage(1);
-            Debug.Log("touched player");
+                audioSource.Play();
+            }
         }
     }
 

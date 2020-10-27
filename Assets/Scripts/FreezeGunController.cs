@@ -5,7 +5,8 @@ using UnityEngine;
 public class FreezeGunController : MonoBehaviour
 {
     [SerializeField] LineRenderer freezeLine;
-    [SerializeField] AudioSource shootSound;
+    [SerializeField] AudioSource freezeSound;
+    [SerializeField] AudioSource unfreezeSound;
     [SerializeField] Transform rayOrigin;
     [SerializeField] Transform playerCamera;
     [SerializeField] Material freezeRayMaterial;
@@ -65,7 +66,7 @@ public class FreezeGunController : MonoBehaviour
     private void FireFeedback()
     {
         //Audio
-        shootSound.Play();
+        freezeSound.Play();
         //Visual
         freezeLine.SetPosition(0, rayOrigin.position);
         freezeLine.SetPosition(1, rayOrigin.position + rayOrigin.forward * shootDistance);
@@ -93,7 +94,7 @@ public class FreezeGunController : MonoBehaviour
     private void AltFireFeedback()
     {
         //Audio
-        shootSound.Play();
+        unfreezeSound.Play();
         //Visual
         freezeLine.SetPosition(0, rayOrigin.position);
         freezeLine.SetPosition(1, rayOrigin.position + rayOrigin.forward * shootDistance);
