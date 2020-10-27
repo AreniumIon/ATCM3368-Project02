@@ -8,6 +8,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] Level01Controller gameController;
     [SerializeField] Text healthText;
     [SerializeField] HealthBar healthBar;
+    [SerializeField] AudioSource loseSound;
 
     public int maxHealth = 5;
     int health;
@@ -47,6 +48,7 @@ public class PlayerHealth : MonoBehaviour
     
     void Die()
     {
+        loseSound.Play();
         gameController.GameOver();
     }
 }
