@@ -7,6 +7,7 @@ public class FreezeGunController : MonoBehaviour
     [SerializeField] LineRenderer freezeLine;
     [SerializeField] AudioSource shootSound;
     [SerializeField] Transform rayOrigin;
+    [SerializeField] Transform playerCamera;
     [SerializeField] Material freezeRayMaterial;
 
     //Firing stats
@@ -28,6 +29,10 @@ public class FreezeGunController : MonoBehaviour
         {
             Fire();
         }
+        else if (Input.GetMouseButtonDown(1) && cooldownTimer >= cooldown)
+        {
+            AltFire();
+        }
 
         if (freezeLine.enabled)
             FadeLine();
@@ -37,15 +42,52 @@ public class FreezeGunController : MonoBehaviour
     {
         FireFeedback();
         //calculate raycast
-        if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, shootDistance))
+        RaycastHit objectHit;
+        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out objectHit, shootDistance))
         {
-            Debug.Log("Hit");
+            FrozenObject frozenObject = objectHit.collider.gameObject.GetComponent<FrozenObject>();
+            if (frozenObject != null)
+                frozenObject.RefreshFreeze();
+            else
+            {
+                Freezable freezableHit = objectHit.collider.gameObject.GetComponent<Freezable>();
+                if (freezableHit != null)
+                    freezableHit.Freeze();
+            }
+
         }
         //reset timer
         cooldownTimer = 0f;
     }
 
     private void FireFeedback()
+    {
+        //Audio
+        shootSound.Play();
+        //Visual
+        freezeLine.SetPosition(0, rayOrigin.position);
+        freezeLine.SetPosition(1, rayOrigin.position + rayOrigin.forward * shootDistance);
+        freezeLine.enabled = true;
+        lineTimer = 0f;
+        StartCoroutine(DisableFreezeLine());
+    }
+
+    private void AltFire()
+    {
+        AltFireFeedback();
+        //calculate raycast
+        RaycastHit objectHit;
+        if (Physics.Raycast(playerCamera.position, playerCamera.forward, out objectHit, shootDistance))
+        {
+            FrozenObject frozenObject = objectHit.collider.gameObject.GetComponent<FrozenObject>();
+            if (frozenObject != null)
+                frozenObject.Unfreeze();
+        }
+        //reset timer
+        cooldownTimer = 0f;
+    }
+
+    private void AltFireFeedback()
     {
         //Audio
         shootSound.Play();

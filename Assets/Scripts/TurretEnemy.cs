@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketEnemyController : Freezable
+public class TurretEnemy : Freezable
 {
     [Header("Movement")]
-    [SerializeField] float moveSpeed = 5f;
     [SerializeField] float turnSpeed = 3f;
     private float turnBuffer = .05f;
     [SerializeField] float detectionRange = 15f;
@@ -39,7 +38,6 @@ public class RocketEnemyController : Freezable
         //moves if close to player
         if (!isFrozen && IsPlayerNearby())
         {
-            MoveToPlayer();
             TurnToPlayer();
             //shooting projectile
             if (canFire && IsPlayerInRange())
@@ -55,24 +53,11 @@ public class RocketEnemyController : Freezable
     //Decides if ship should shoot
     bool IsPlayerInRange()
     {
-        RaycastHit hit;
-        Physics.Raycast(projectileSpawnPoint.position, projectileSpawnPoint.forward, out hit, distanceToFire, layerMask);
-        return hit.collider.gameObject.GetComponent<PlayerMovement>() != null;
+        return Vector3.Distance(player.position, transform.position) <= distanceToFire;
     }
 
-
-
+    
     //MOVEMENT
-    void MoveToPlayer()
-    {
-        //calculate direction
-        Vector3 distanceToPlayer = player.position - transform.position;
-        distanceToPlayer.y = 0;
-        Vector3 moveDirection = distanceToPlayer.normalized;
-        //move
-        transform.Translate(moveDirection * moveSpeed * Time.deltaTime);
-    }
-
     void TurnToPlayer()
     {
         //calculate rotation
@@ -80,7 +65,7 @@ public class RocketEnemyController : Freezable
         art.Rotate(0, turnAmountThisFrame, 0);
     }
 
-    //used for MoveShip() and TurnShip()
+    //used for turning
     float GetDot(float variableSpeed, Vector3 baseDirection)
     {
         float dotResult = Vector3.Dot(baseDirection, (player.position - transform.position).normalized);

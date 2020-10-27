@@ -20,11 +20,6 @@ public class Level01Controller : MonoBehaviour
 
     private void Update()
     {
-        //increase score
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            IncreaseScore(5);
-        }
         //pause
         if (Input.GetKeyDown(KeyCode.Escape))
         {

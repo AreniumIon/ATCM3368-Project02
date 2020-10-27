@@ -17,6 +17,10 @@ public class PlayerMovement : MonoBehaviour
     Vector3 velocity;
     bool isGrounded;
 
+    //vertical clamp
+    float minYVelocity = Physics.gravity.y * 2f;
+    float maxYVelocity = Physics.gravity.y * -5f;
+
     private void Update()
     {
         //Ground detection
@@ -48,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         velocity.y += Physics.gravity.y * Time.deltaTime;
+        velocity.y = Mathf.Clamp(velocity.y, minYVelocity, maxYVelocity);
 
         controller.Move(velocity * Time.deltaTime);
     }

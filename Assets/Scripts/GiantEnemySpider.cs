@@ -2,33 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RocketEnemyController : Freezable
+public class GiantEnemySpider : Freezable
 {
     [Header("Movement")]
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float turnSpeed = 3f;
     private float turnBuffer = .05f;
     [SerializeField] float detectionRange = 15f;
-
-    [Header("Projectile")]
-    [SerializeField] float projectileReloadTime = 3f;
-    [SerializeField] float distanceToFire = 15f;
-    [SerializeField] GameObject rocketProjectile = null;
-    [SerializeField] AudioSource projectileFireSound = null;
-    [SerializeField] Transform projectileSpawnPoint = null;
     [SerializeField] Transform art = null;
 
     [Header("Other")]
     Rigidbody rb = null;
-    Transform projectileParent = null;
     Transform player = null;
-    [SerializeField] LayerMask layerMask = new LayerMask();
-    bool canFire = true; //cooldown for firing
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        projectileParent = GameObject.FindGameObjectWithTag("ProjectilesParent").transform;
         player = Transform.FindObjectOfType<PlayerHealth>().transform;
     }
 
@@ -41,9 +30,6 @@ public class RocketEnemyController : Freezable
         {
             MoveToPlayer();
             TurnToPlayer();
-            //shooting projectile
-            if (canFire && IsPlayerInRange())
-                Shoot();
         }
     }
 
@@ -52,14 +38,6 @@ public class RocketEnemyController : Freezable
     {
         return Vector3.Distance(transform.position, player.position) <= detectionRange;
     }
-    //Decides if ship should shoot
-    bool IsPlayerInRange()
-    {
-        RaycastHit hit;
-        Physics.Raycast(projectileSpawnPoint.position, projectileSpawnPoint.forward, out hit, distanceToFire, layerMask);
-        return hit.collider.gameObject.GetComponent<PlayerMovement>() != null;
-    }
-
 
 
     //MOVEMENT
@@ -98,34 +76,11 @@ public class RocketEnemyController : Freezable
     {
         this.gameObject.SetActive(false);
     }
-
-    //FIRE PROJECTILE
-    void Shoot()
-    {
-        //create projectile
-        Instantiate(rocketProjectile, projectileSpawnPoint.position, art.rotation, projectileParent);
-        //play projectile effects
-        PlayShootFeedback();
-        //prevents from shooting again until DelayAction marks the ship as reloaded
-        canFire = false;
-        StartCoroutine(ReadyToFire());
-    }
-
-    void PlayShootFeedback()
-    {
-        //sound
-        projectileFireSound.Play();
-    }
-
-    private IEnumerator ReadyToFire()
-    {
-        yield return new WaitForSeconds(projectileReloadTime);
-        canFire = true;
-    }
-
+    
     //Freezing
     public override void Freeze()
     {
+        Debug.Log("frozen");
         isFrozen = true;
         frozenObject.SetActive(true);
     }
